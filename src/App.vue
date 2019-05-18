@@ -57,6 +57,7 @@ export default {
       })
       .then((jsonData) => {
         this.questions = jsonData.results
+         
       })
   }
 }
