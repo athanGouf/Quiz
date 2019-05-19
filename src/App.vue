@@ -8,10 +8,19 @@
       <b-row sm="6" offset="3">
         <b-col>
           <QuestionBox 
-            v-if = "questions.length"
+            v-if = "questions.length && !gotoResults"
             :currentQuestion = "questions[index]"
             :nextQuest = "next"
             :increment = "increment"
+          />
+        </b-col>
+      </b-row>
+      <b-row sm="6" offset="3">
+        <b-col>
+          <Results 
+            v-if = "gotoResults"
+            :numCorrect = "numCorrect"
+            :numTotal = "numTotal"
           />
         </b-col>
       </b-row>
@@ -22,24 +31,32 @@
 <script>
 import Header from './components/Header.vue'
 import QuestionBox from './components/QuestionBox.vue'
+import Results from './components/Results.vue'
 
 export default {
   name: 'app',
   components: {
     Header,
-    QuestionBox
+    QuestionBox,
+    Results
   },
   data() {
     return {
       questions: [],
       index: 0,
       numCorrect: 0,
-      numTotal: 0
+      numTotal: 0,
+      gotoResults: false
     }
   },
   methods:{
     next: function() {
-      this.index++
+      if(this.index<9){
+        this.index++
+      }
+      else{
+        this.gotoResults =  true
+      }
     },
     increment(isCorrect) {
       if(isCorrect){

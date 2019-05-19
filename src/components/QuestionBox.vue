@@ -25,7 +25,7 @@
         >
         Submit
       </b-button>
-      <b-button variant="success" @click = "nextQuest" :disabled = "!answered || index === 10">Next</b-button>
+      <b-button variant="success" @click = "nextQuest" :disabled = "!answered">Next</b-button>
     </b-jumbotron>
 </div>
 </template>
@@ -44,24 +44,19 @@
         correctIndex: null,
         shuffledAnswers: [],
         answered: false,
-        index: 0
+        
       }
     },
     computed: {
       question: function(){
         let question = this.currentQuestion.question
-        return question.replace(/&quot;|&#039;/g,(matched) =>{
+        return question.replace(/&quot;|&#039;|&ldquo;|&rdquo;/g,(matched) =>{
           if(matched === '&quot;')
             return '"'
           else {
             return '\''
           }
         })
-      },
-      answers: function() {
-        let answrs = [...this.currentQuestion.incorrect_answers]
-        answrs.push(this.currentQuestion.correct_answer)
-        return answrs
       }
     },
     watch: {
@@ -86,7 +81,6 @@
         }
         this.answered = true
         this.increment(isCorrect)
-        this.index++
       },
       shuffleAnswers() {
         let answers = [...this.currentQuestion.incorrect_answers, this.currentQuestion.correct_answer]
